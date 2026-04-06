@@ -176,4 +176,37 @@ public class oop
         }
     }
 
-   }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("=== СТВОРЕННЯ ДРОБІВ ===");
+            // Створюємо 1/2
+            Sign signPositive = new Sign(true);
+            SimpleFraction fraction1 = new SimpleFraction(1, 2, signPositive);
+
+            // Створюємо -1/4
+            Sign signNegative = new Sign(false);
+            SimpleFraction fraction2 = new SimpleFraction(1, 4, signNegative);
+
+            Console.WriteLine("\n=== ВИВЕДЕННЯ НА ЕКРАН ===");
+            fraction1.Print();
+            fraction2.Print();
+
+            Console.WriteLine("\n=== ОПЕРАЦІЯ ДОДАВАННЯ (1/2 + -1/4) ===");
+            SimpleFraction sum = fraction1.Add(fraction2);
+            sum.Print();
+
+            Console.WriteLine("\n=== ОПЕРАЦІЯ МНОЖЕННЯ (1/2 * -1/4) ===");
+            SimpleFraction product = fraction1.Multiply(fraction2);
+            product.Print();
+
+            Console.WriteLine("\n=== ПЕРЕВІРКА EQUALS ===");
+            SimpleFraction fraction3 = new SimpleFraction(2, 4, new Sign(true)); // Скоротиться до 1/2
+            bool areEqual = fraction1.Equals(fraction3);
+            Console.WriteLine($"Дроби рівні? {areEqual}");
+
+            Console.ReadLine();
+        }
+    }
+}
