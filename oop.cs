@@ -93,5 +93,87 @@ public class oop
             return a;
         }
 
+     
+        public void Print()
+        {
+            Console.WriteLine("[LOG] Викликано метод Print класу SimpleFraction.");
+            Console.WriteLine($"Результат: {this.ToString()}");
+        }
+
+        
+        public SimpleFraction Add(SimpleFraction other)
+        {
+            Console.WriteLine("[LOG] Викликано метод Add класу SimpleFraction.");
+            int sign1 = this.FractionSign.IsPositive ? 1 : -1;
+            int sign2 = other.FractionSign.IsPositive ? 1 : -1;
+
+            int num1 = this.Numerator * sign1;
+            int num2 = other.Numerator * sign2;
+
+            int newNumerator = (num1 * other.Denominator) + (num2 * this.Denominator);
+            int newDenominator = this.Denominator * other.Denominator;
+
+            Sign newSign = new Sign(newNumerator >= 0);
+            return new SimpleFraction(Math.Abs(newNumerator), newDenominator, newSign);
+        }
+        
+        public SimpleFraction Subtract(SimpleFraction other)
+        {
+            Console.WriteLine("[LOG] Викликано метод Subtract класу SimpleFraction.");
+            // Віднімання - це додавання дробу з протилежним знаком
+            Sign invertedSign = new Sign(!other.FractionSign.IsPositive);
+            SimpleFraction invertedOther = new SimpleFraction(other.Numerator, other.Denominator, invertedSign);
+            return Add(invertedOther);
+        }
+        
+        public SimpleFraction Multiply(SimpleFraction other)
+        {
+            Console.WriteLine("[LOG] Викликано метод Multiply класу SimpleFraction.");
+            int newNumerator = this.Numerator * other.Numerator;
+            int newDenominator = this.Denominator * other.Denominator;
+            bool isPositive = (this.FractionSign.IsPositive == other.FractionSign.IsPositive);
+            
+            return new SimpleFraction(newNumerator, newDenominator, new Sign(isPositive));
+        }
+        
+        public SimpleFraction Divide(SimpleFraction other)
+        {
+            Console.WriteLine("[LOG] Викликано метод Divide класу SimpleFraction.");
+            if (other.Numerator == 0) throw new DivideByZeroException("Ділення на нуль.");
+            
+            int newNumerator = this.Numerator * other.Denominator;
+            int newDenominator = this.Denominator * other.Numerator;
+            bool isPositive = (this.FractionSign.IsPositive == other.FractionSign.IsPositive);
+            
+            return new SimpleFraction(newNumerator, newDenominator, new Sign(isPositive));
+        }
+        
+        public override bool Equals(object obj)
+        {
+            Console.WriteLine("[LOG] Викликано метод Equals класу SimpleFraction.");
+            if (obj is SimpleFraction other)
+            {
+                return this.Numerator == other.Numerator &&
+                       this.Denominator == other.Denominator &&
+                       this.FractionSign.Equals(other.FractionSign);
+            }
+            return false;
+        }
+        
+        public override int GetHashCode()
+        {
+            Console.WriteLine("[LOG] Викликано метод GetHashCode класу SimpleFraction.");
+            return HashCode.Combine(Numerator, Denominator, FractionSign);
+        }
+        
+        public override string ToString()
+        {
+            Console.WriteLine("[LOG] Викликано метод ToString класу SimpleFraction.");
+            string signStr = FractionSign.IsPositive ? "" : "-"; // Плюс не пишемо для краси
+            if (Numerator == 0) return "0";
+            if (Denominator == 1) return $"{signStr}{Numerator}";
+            return $"{signStr}{Numerator}/{Denominator}";
+        }
     }
-}
+
+   }
